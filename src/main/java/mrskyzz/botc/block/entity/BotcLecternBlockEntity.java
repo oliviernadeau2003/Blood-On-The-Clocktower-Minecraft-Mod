@@ -13,21 +13,41 @@ public class BotcLecternBlockEntity extends LecternBlockEntity {
         super(pos, state);
     }
 
-    public ItemStack getOriginalBook() {
-        // ✅ use vanilla accessor
-        return originalBook.isEmpty()
-                ? this.getBook().copy()
-                : originalBook.copy();
+//    public ItemStack getOriginalBook() {
+//        // ✅ use vanilla accessor
+//        return originalBook.isEmpty()
+//                ? this.getBook().copy()
+//                : originalBook.copy();
+//    }
+//
+//    public void setOriginalBook(ItemStack stack) {
+//        this.originalBook = stack.copy();
+//        this.setChanged();
+//    }
+//
+//    @Override
+//    public void clearContent() {
+//        super.clearContent();
+//        originalBook = ItemStack.EMPTY;
+//    }
+
+    public void setOriginalBook(ItemStack book) {
+        this.originalBook = book;
+        // Trigger a block update here to force a render refresh
+        setChanged();
     }
 
-    public void setOriginalBook(ItemStack stack) {
-        this.originalBook = stack.copy();
-        this.setChanged();
+    public ItemStack getOriginalBook() {
+        return originalBook;
     }
 
     @Override
-    public void clearContent() {
-        super.clearContent();
-        originalBook = ItemStack.EMPTY;
+    public void setChanged() {
+        super.setChanged();
+        if (level != null && !level.isClientSide) {
+            // Notify clients about the change so the block's model can update
+            BlockState state = level.getBlockState(getBlockPos());
+            level.setBlock(getBlockPos(), state, 3);
+        }
     }
 }

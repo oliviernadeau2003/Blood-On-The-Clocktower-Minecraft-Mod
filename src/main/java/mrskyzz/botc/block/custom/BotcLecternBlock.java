@@ -48,6 +48,7 @@ public class BotcLecternBlock extends LecternBlock {
                 BlockEntity be = level.getBlockEntity(pos);
                 if (be instanceof BotcLecternBlockEntity botcBe) {
                     botcBe.setOriginalBook(held);
+                    level.setBlock(pos, state.setValue(HAS_BOOK, true), 3);
                 }
                 if (!player.isCreative()) {
                     held.shrink(1);

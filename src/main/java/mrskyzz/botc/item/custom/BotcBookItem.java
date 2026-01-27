@@ -1,16 +1,14 @@
 package mrskyzz.botc.item.custom;
 
-import mrskyzz.botc.utils.BotcMenu;
+import mrskyzz.botc.menu.BotcStartupMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +23,8 @@ public class BotcBookItem extends Item {
         NetworkHooks.openScreen(
                 player,
                 new SimpleMenuProvider(
-                        (id, playerInv, p) -> new BotcMenu(id, playerInv),
-                        Component.literal("Startup Menu")
+                        (id, playerInv, p) -> new BotcStartupMenu(id, playerInv),
+                        Component.literal("Startup Menu - BOTC")
                 )
         );
     }
