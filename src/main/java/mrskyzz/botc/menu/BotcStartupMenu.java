@@ -4,10 +4,11 @@ import mrskyzz.botc.Botc;
 import mrskyzz.botc.utils.AbstractBotcMenu;
 import mrskyzz.botc.utils.NameToggleUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
@@ -30,7 +31,7 @@ public class BotcStartupMenu extends AbstractBotcMenu {
         /// Either using the ClientboundSoundPacket for a single player or the player.level().playSound(...) for playing a sound at a world position
         player.connection.send(
                 new ClientboundSoundPacket(
-                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.ARROW_HIT_PLAYER),
+                        sound(SoundEvents.ARROW_HIT_PLAYER),
                         SoundSource.PLAYERS,
                         player.getX(),
                         player.getY(),
@@ -40,14 +41,18 @@ public class BotcStartupMenu extends AbstractBotcMenu {
                         player.getRandom().nextLong()
                 )
         );
-//        player.level().playSound(
-//                null, // null = play for all nearby players, including this one
-//                player.blockPosition(),
-//                SoundEvents.ARROW_HIT_PLAYER,
-//                SoundSource.PLAYERS,
-//                1.0F,
-//                1.0F
-//        );
+//         player.level().playSound(
+//                 null, // null = play for all nearby players, including this one
+//                 player.blockPosition(),
+//                 SoundEvents.ARROW_HIT_PLAYER,
+//                 SoundSource.PLAYERS,
+//                 1.0F,
+//                 1.0F
+//         );
+    }
+
+    private static Holder<SoundEvent> sound(SoundEvent event) {
+        return Holder.direct(event);
     }
 
     @Override
@@ -94,5 +99,6 @@ public class BotcStartupMenu extends AbstractBotcMenu {
 
         }
     }
+
 }
 

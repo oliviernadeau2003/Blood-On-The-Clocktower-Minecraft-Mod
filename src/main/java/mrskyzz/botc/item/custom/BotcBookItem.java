@@ -1,7 +1,7 @@
 package mrskyzz.botc.item.custom;
 
 import mrskyzz.botc.Botc;
-import mrskyzz.botc.menu.BotcAdminGameMenu;
+import mrskyzz.botc.menu.BotcGameMasterMenu;
 import mrskyzz.botc.menu.BotcStartupMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,8 +35,8 @@ public class BotcBookItem extends Item {
             NetworkHooks.openScreen(
                     player,
                     new SimpleMenuProvider(
-                            (id, playerInv, p) -> new BotcAdminGameMenu(id, playerInv),
-                            Component.literal("Admin Menu - BOTC")
+                            (id, playerInv, p) -> new BotcGameMasterMenu(id, playerInv),
+                            Component.literal("Game Master Menu - BOTC")
                     )
             );
         }

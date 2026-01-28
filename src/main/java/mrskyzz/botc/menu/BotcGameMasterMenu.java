@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 
-public class BotcAdminGameMenu extends AbstractBotcMenu {
+public class BotcGameMasterMenu extends AbstractBotcMenu {
 
-    public BotcAdminGameMenu(int id, Inventory playerInv) {
+    public BotcGameMasterMenu(int id, Inventory playerInv) {
         super(MenuType.GENERIC_9x6, id, playerInv, 6);
     }
 

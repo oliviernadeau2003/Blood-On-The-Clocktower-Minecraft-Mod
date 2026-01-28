@@ -51,8 +51,12 @@ public class ModCreativeModTabs {
 
 
         // BLOCKS
-//        output.accept(ModBlocks.TEST_BLOCK.get());
+        //output.accept(ModBlocks.TEST_BLOCK.get());
         output.accept(ModBlocks.LECTERN_BLOCK.get());
+
+
+        output.accept(ModItems.DEATH_PLAYER_HELMET.get());
+
     }).build());
 
     public static void register(IEventBus eventBus) {

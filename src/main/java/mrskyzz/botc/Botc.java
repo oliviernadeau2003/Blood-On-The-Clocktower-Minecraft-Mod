@@ -1,6 +1,7 @@
 package mrskyzz.botc;
 
 // TODO : Remake lang accordingly ..
+// TODO : When "killing" a player, darken out his name
 
 import com.mojang.logging.LogUtils;
 import mrskyzz.botc.block.ModBlockEntities;
@@ -38,7 +39,6 @@ public class Botc {
 
         MinecraftForge.EVENT_BUS.register(this);
         // modEventBus.addListener(this::addCreative);
-
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

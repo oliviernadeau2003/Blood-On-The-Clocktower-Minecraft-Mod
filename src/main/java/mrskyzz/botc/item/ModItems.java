@@ -2,8 +2,10 @@ package mrskyzz.botc.item;
 
 import mrskyzz.botc.Botc;
 import mrskyzz.botc.item.custom.BotcBookItem;
+import mrskyzz.botc.item.custom.DeathOverlayHelmetItem;
 import mrskyzz.botc.item.custom.RoleBookItem;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -521,6 +523,11 @@ public class ModItems {
                                     """))
                     )
             )
+    );
+
+    public static final RegistryObject<Item> DEATH_PLAYER_HELMET = ITEMS.register(
+            "death_player_helmet",
+            () -> new DeathOverlayHelmetItem(ArmorMaterials.LEATHER, new Item.Properties())
     );
 
     // REGISTER

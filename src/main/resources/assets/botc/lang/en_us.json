@@ -1,5 +1,6 @@
 {
   "item.botc.botc_book" : "Blood On The Clocktower Book",
+  "item.botc.death_player_helmet" : "Death Player Helmet",
 
   "item.botc.book_role_diablotin" : "Rôle Diablotin",
   "item.botc.book_role_baron" : "Rôle Baron",
@@ -23,7 +24,7 @@
   "item.botc.book_role_reclus" : "Rôle Reclus",
   "item.botc.book_role_saint" : "Rôle Saint",
 
-  "block.botc.botc_lectern" : "Blood On The Clocktower Lectern",
+  "block.botc.botc_lectern" : "Role Book Lectern",
 
   "creativetab.botc_tab": "Blood On The Clocktower"
 }
