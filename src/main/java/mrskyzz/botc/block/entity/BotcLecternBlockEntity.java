@@ -13,6 +13,7 @@ public class BotcLecternBlockEntity extends LecternBlockEntity {
         super(pos, state);
     }
 
+
 //    public ItemStack getOriginalBook() {
 //        // ✅ use vanilla accessor
 //        return originalBook.isEmpty()
@@ -31,14 +32,14 @@ public class BotcLecternBlockEntity extends LecternBlockEntity {
 //        originalBook = ItemStack.EMPTY;
 //    }
 
+    public ItemStack getOriginalBook() {
+        return originalBook;
+    }
+
     public void setOriginalBook(ItemStack book) {
         this.originalBook = book;
         // Trigger a block update here to force a render refresh
         setChanged();
-    }
-
-    public ItemStack getOriginalBook() {
-        return originalBook;
     }
 
     @Override

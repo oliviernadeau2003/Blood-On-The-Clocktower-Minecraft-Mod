@@ -1,5 +1,7 @@
 package mrskyzz.botc.item.custom;
 
+import mrskyzz.botc.Botc;
+import mrskyzz.botc.menu.BotcAdminGameMenu;
 import mrskyzz.botc.menu.BotcStartupMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,13 +22,24 @@ public class BotcBookItem extends Item {
     }
 
     private void openChest(ServerPlayer player) {
-        NetworkHooks.openScreen(
-                player,
-                new SimpleMenuProvider(
-                        (id, playerInv, p) -> new BotcStartupMenu(id, playerInv),
-                        Component.literal("Startup Menu - BOTC")
-                )
-        );
+        // Based on the current game state, a different menu will be open.
+        if (Botc.gameState == Botc.GameState.SETUP) {
+            NetworkHooks.openScreen(
+                    player,
+                    new SimpleMenuProvider(
+                            (id, playerInv, p) -> new BotcStartupMenu(id, playerInv),
+                            Component.literal("Startup Menu - BOTC")
+                    )
+            );
+        } else {
+            NetworkHooks.openScreen(
+                    player,
+                    new SimpleMenuProvider(
+                            (id, playerInv, p) -> new BotcAdminGameMenu(id, playerInv),
+                            Component.literal("Admin Menu - BOTC")
+                    )
+            );
+        }
     }
 
     @Override
@@ -124,10 +137,10 @@ public class BotcBookItem extends Item {
 //            openChest(serverPlayer);
 //        }
 //
-////        if (player.isShiftKeyDown()) {}
+/// /        if (player.isShiftKeyDown()) {}
 //
 //        //* Toggle Player Visibility
-////        player.setInvisible(!player.isInvisible());
+/// /        player.setInvisible(!player.isInvisible());
 //
 //        return InteractionResultHolder.success(player.getItemInHand(hand));
 //    }

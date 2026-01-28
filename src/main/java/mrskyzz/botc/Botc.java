@@ -3,8 +3,8 @@ package mrskyzz.botc;
 // TODO : Remake lang accordingly ..
 
 import com.mojang.logging.LogUtils;
-import mrskyzz.botc.block.ModBlocks;
 import mrskyzz.botc.block.ModBlockEntities;
+import mrskyzz.botc.block.ModBlocks;
 import mrskyzz.botc.item.ModCreativeModTabs;
 import mrskyzz.botc.item.ModItems;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,6 +24,8 @@ public class Botc {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static GameState gameState = GameState.SETUP;
+
     public Botc(FMLJavaModLoadingContext context) {
         var modEventBus = context.getModEventBus();
 
@@ -36,35 +38,37 @@ public class Botc {
 
         MinecraftForge.EVENT_BUS.register(this);
         // modEventBus.addListener(this::addCreative);
-    }
 
+    }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
 
     }
-
-//     Add the example block item to the building blocks tab
-//    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-//        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES){
-//            event.accept(ModItems.BOTC_BOOK);
-//        }
-//    }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-//    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-//    public static class ClientModEvents {
-//
-//        @SubscribeEvent
-//        public static void onClientSetup(FMLClientSetupEvent event) {
-//            // Some client setup code
-//            LOGGER.info("HELLO FROM CLIENT SETUP");
-//            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-//        }
-//    }
+    public enum GameState {
+        WAITING,
+        /// Waiting in lobby for players to join before the game starts
+        SETUP,
+        /// Assigning roles, initializing data, teleporting players
+        FIRST_NIGHT,
+        /// Special first night where extra roles act
+        NIGHT,
+        /// Regular night phase where roles perform their actions
+        MORNING,
+        /// Night results are revealed (deaths, info), transition to day
+        DAY,
+        /// Open discussion phase for all living players
+        NOMINATION,
+        /// Players nominate others and vote for execution
+        EXECUTION,
+        /// Execution is carried out and win conditions are checked
+        GAME_OVER
+        /// Game has ended and the winning team is announced
+    }
 
 }
