@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import mrskyzz.botc.Botc;
 import mrskyzz.botc.game.Game;
 import mrskyzz.botc.game.GameState;
 import net.minecraft.commands.CommandSourceStack;
@@ -44,17 +43,15 @@ public class SetGameStateCommand {
             GameState state = GameState.valueOf(stateName.toUpperCase());
             Game.setGameState(state); // Update the current game state
             context.getSource().sendSuccess(
-                    (java.util.function.Supplier<net.minecraft.network.chat.Component>)
-                            () -> Component.literal("Game state set to: " + state),
+                    () -> Component.literal("Game state set to: " + state),
                     true
             );
             return 1; // success
-        }
-        catch (IllegalArgumentException e) {
-//            context.getSource().sendFailure(
-//                    (java.util.function.Supplier<net.minecraft.network.chat.Component>)
-//                            () -> Component.literal("Invalid game state: " + stateName)
-//            );
+        } catch (IllegalArgumentException e) {
+            context.getSource().sendFailure(
+                    ((Supplier<Component>)
+                            () -> Component.literal("Invalid game state: " + stateName)).get()
+            );
             return 0; // failure
         }
     }

@@ -1,6 +1,5 @@
 package mrskyzz.botc.menu;
 
-import mrskyzz.botc.Botc;
 import mrskyzz.botc.game.Game;
 import mrskyzz.botc.game.GameState;
 import mrskyzz.botc.utils.AbstractBotcMenu;
@@ -14,16 +13,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.network.NetworkHooks;
 
 public class BotcStartupMenu extends AbstractBotcMenu {
+    private final int ROWS = 3;
+    private final int COLS = 9;
+    final int INVENTORY_SIZE = ROWS * COLS;
 
     public BotcStartupMenu(int id, Inventory playerInv) {
-        super(MenuType.GENERIC_9x3, id, playerInv, 3);
+        super(MenuType.GENERIC_9x3, id);
+        init(playerInv, ROWS);
     }
 
     private static void startGame(ServerPlayer player) {
@@ -59,7 +64,6 @@ public class BotcStartupMenu extends AbstractBotcMenu {
 
     @Override
     public SimpleContainer createContainer() {
-        final int INVENTORY_SIZE = 27;
         SimpleContainer container = new SimpleContainer(INVENTORY_SIZE);
 
         ItemStack filler = new ItemStack(Items.GRAY_STAINED_GLASS_PANE);
@@ -93,7 +97,20 @@ public class BotcStartupMenu extends AbstractBotcMenu {
         switch (slotId) {
             case 10 -> startGame(player);
             case 14 -> player.sendSystemMessage(Component.literal("Set Doors clicked!"));
-            case 15 -> player.sendSystemMessage(Component.literal("Set Player Head clicked!"));
+            case 15 -> {
+                player.sendSystemMessage(Component.literal("Set Player Head clicked!"));
+
+                //! TEMP
+                NetworkHooks.openScreen(
+                        player,
+                        new SimpleMenuProvider(
+                                (id, playerInv, p) -> new BotcPlayersMenu(id, playerInv, player),
+                                Component.literal("Players - BOTC")
+                        )
+                );
+
+
+            }
             case 16 -> {
                 player.sendSystemMessage(Component.literal("Toggle Name clicked!"));
                 NameToggleUtil.togglePlayerName(player);
