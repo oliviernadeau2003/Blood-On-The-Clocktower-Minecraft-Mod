@@ -1,6 +1,8 @@
 package mrskyzz.botc.item.custom;
 
 import mrskyzz.botc.Botc;
+import mrskyzz.botc.game.Game;
+import mrskyzz.botc.game.GameState;
 import mrskyzz.botc.menu.BotcGameMasterMenu;
 import mrskyzz.botc.menu.BotcStartupMenu;
 import net.minecraft.network.chat.Component;
@@ -23,7 +25,7 @@ public class BotcBookItem extends Item {
 
     private void openChest(ServerPlayer player) {
         // Based on the current game state, a different menu will be open.
-        if (Botc.gameState == Botc.GameState.SETUP) {
+        if (Game.getGameState() == GameState.SETUP) {
             NetworkHooks.openScreen(
                     player,
                     new SimpleMenuProvider(

@@ -1,6 +1,8 @@
 package mrskyzz.botc.menu;
 
 import mrskyzz.botc.Botc;
+import mrskyzz.botc.game.Game;
+import mrskyzz.botc.game.GameState;
 import mrskyzz.botc.utils.AbstractBotcMenu;
 import mrskyzz.botc.utils.NameToggleUtil;
 import net.minecraft.ChatFormatting;
@@ -26,7 +28,7 @@ public class BotcStartupMenu extends AbstractBotcMenu {
 
     private static void startGame(ServerPlayer player) {
         player.sendSystemMessage(Component.literal("Start clicked!"));
-        Botc.gameState = Botc.GameState.FIRST_NIGHT;
+        Game.setGameState(GameState.FIRST_NIGHT);
         player.closeContainer();
         /// Either using the ClientboundSoundPacket for a single player or the player.level().playSound(...) for playing a sound at a world position
         player.connection.send(

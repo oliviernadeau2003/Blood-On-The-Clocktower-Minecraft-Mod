@@ -25,8 +25,6 @@ public class Botc {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static GameState gameState = GameState.SETUP;
-
     public Botc(FMLJavaModLoadingContext context) {
         var modEventBus = context.getModEventBus();
 
@@ -49,26 +47,4 @@ public class Botc {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }
-
-    public enum GameState {
-        WAITING,
-        /// Waiting in lobby for players to join before the game starts
-        SETUP,
-        /// Assigning roles, initializing data, teleporting players
-        FIRST_NIGHT,
-        /// Special first night where extra roles act
-        NIGHT,
-        /// Regular night phase where roles perform their actions
-        MORNING,
-        /// Night results are revealed (deaths, info), transition to day
-        DAY,
-        /// Open discussion phase for all living players
-        NOMINATION,
-        /// Players nominate others and vote for execution
-        EXECUTION,
-        /// Execution is carried out and win conditions are checked
-        GAME_OVER
-        /// Game has ended and the winning team is announced
-    }
-
 }
