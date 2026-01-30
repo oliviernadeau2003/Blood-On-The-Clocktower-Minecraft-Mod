@@ -7,6 +7,7 @@ import mrskyzz.botc.utils.NameToggleUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -74,19 +75,19 @@ public class BotcStartupMenu extends AbstractBotcMenu {
         }
 
         ItemStack start = new ItemStack(Items.LIME_CONCRETE);
-        start.setHoverName(Component.literal("Start Game"));
+        start.setHoverName(Component.literal("Start Game").withStyle(ChatFormatting.GREEN));
         container.setItem(10, start);
 
         ItemStack setDoors = new ItemStack(Items.SPRUCE_DOOR);
-        setDoors.setHoverName(Component.literal("Set Doors"));
+        setDoors.setHoverName(Component.literal("Set Doors").withStyle(ChatFormatting.GRAY));
         container.setItem(14, setDoors);
 
         ItemStack setPlayerHead = new ItemStack(Items.PLAYER_HEAD);
-        setPlayerHead.setHoverName(Component.literal("Set Player Head").withStyle(ChatFormatting.WHITE));
+        setPlayerHead.setHoverName(Component.literal("Set Player Head").withStyle(ChatFormatting.GOLD));
         container.setItem(15, setPlayerHead);
 
         ItemStack toggleName = new ItemStack(Items.NAME_TAG);
-        toggleName.setHoverName(Component.literal("Toggle Name"));
+        toggleName.setHoverName(Component.literal("Toggle Name").withStyle(ChatFormatting.DARK_AQUA));
         container.setItem(16, toggleName);
 
         return container;

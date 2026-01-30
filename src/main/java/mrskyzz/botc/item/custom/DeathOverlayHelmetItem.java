@@ -1,6 +1,8 @@
 package mrskyzz.botc.item.custom;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -14,6 +16,12 @@ public class DeathOverlayHelmetItem extends ArmorItem {
 
     public DeathOverlayHelmetItem(ArmorMaterial material, Properties properties) {
         super(material, Type.HELMET, properties);
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.translatable("item.botc.death_player_helmet")
+                .withStyle(ChatFormatting.DARK_GRAY);
     }
 
     @Override

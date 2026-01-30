@@ -1,7 +1,13 @@
 package mrskyzz.botc.game;
 
+import net.minecraft.core.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Game {
 
+    public static List<Door> doors = new ArrayList<>();
     private static GameState gameState = GameState.SETUP;
 
     public static GameState getGameState() {
@@ -24,6 +30,13 @@ public class Game {
 //        }
         System.out.println("Game state changed to: " + newState);
     }
+
+    /**
+     * A {@code record} is a special kind of class in Java designed to hold immutable data. It exists to replace small “data holder” classes that only store values.
+     */
+    public record Door(BlockPos pos1, BlockPos pos2) {
+    }
+
 
     // Example helper
 //    public static boolean isNightPhase() {
