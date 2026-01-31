@@ -1,6 +1,5 @@
 package mrskyzz.botc.item.custom;
 
-import mrskyzz.botc.Botc;
 import mrskyzz.botc.game.Game;
 import mrskyzz.botc.game.GameState;
 import mrskyzz.botc.menu.BotcGameMasterMenu;

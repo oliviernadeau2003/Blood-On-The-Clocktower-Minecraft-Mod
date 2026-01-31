@@ -16,7 +16,7 @@ public class Game {
 
     public static void setGameState(GameState newState) {
         gameState = newState;
-        // TODO: Add hooks/events if needed, e.g., notify players
+        // // TODO  [2026-01-30] : Add hooks/events if needed, e.g., notify players
 //        GameState {
 //            WAITING,       // Waiting in lobby for players, (having a action bar title that says 3/6 (min) 21 (max) players) ???
 //            SETUP,         // Assigning roles, initializing data, setting doors and head placement -> (door's head & table's head)
@@ -38,7 +38,7 @@ public class Game {
     }
 
 
-    // Example helper
+//    Example helper
 //    public static boolean isNightPhase() {
 //        return gameState == GameState.NIGHT || gameState == GameState.FIRST_NIGHT;
 //    }

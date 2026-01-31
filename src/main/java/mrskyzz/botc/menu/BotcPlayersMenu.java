@@ -42,7 +42,7 @@ public class BotcPlayersMenu extends AbstractBotcMenu {
     private void setPlayersHead(SimpleContainer container) {
         int index = 0;
         var players = player.server.getPlayerList().getPlayers();
-        //! TODO : Make sure to remove the admin player head from the menu
+        //! // TODO  [2026-01-30] : Make sure to remove the admin player head from the menu
 //        var players = player.server.getPlayerList().getPlayers().stream()
 //                .filter(p -> p != player) // exclude the Game Master (player who opened the book)
 //                .toList();

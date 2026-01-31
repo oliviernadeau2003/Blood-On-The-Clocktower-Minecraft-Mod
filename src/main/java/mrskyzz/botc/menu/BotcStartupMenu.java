@@ -6,6 +6,9 @@ import mrskyzz.botc.utils.AbstractBotcMenu;
 import mrskyzz.botc.utils.NameToggleUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
@@ -21,6 +24,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.network.NetworkHooks;
+
+import java.util.List;
 
 public class BotcStartupMenu extends AbstractBotcMenu {
     private final int ROWS = 3;
@@ -74,21 +79,41 @@ public class BotcStartupMenu extends AbstractBotcMenu {
             container.setItem(i, filler.copy());
         }
 
-        ItemStack start = new ItemStack(Items.LIME_CONCRETE);
-        start.setHoverName(Component.literal("Start Game").withStyle(ChatFormatting.GREEN));
-        container.setItem(10, start);
+        ItemStack startItem = new ItemStack(Items.LIME_CONCRETE);
+        startItem.setHoverName(Component.literal("Start Game").withStyle(ChatFormatting.GREEN));
+        container.setItem(10, startItem);
 
-        ItemStack setDoors = new ItemStack(Items.SPRUCE_DOOR);
-        setDoors.setHoverName(Component.literal("Set Doors").withStyle(ChatFormatting.GRAY));
-        container.setItem(14, setDoors);
+        ItemStack setDoorsItem = new ItemStack(Items.SPRUCE_DOOR);
+        setDoorsItem.setHoverName(Component.literal("Set Doors").withStyle(ChatFormatting.GRAY));
 
-        ItemStack setPlayerHead = new ItemStack(Items.PLAYER_HEAD);
-        setPlayerHead.setHoverName(Component.literal("Set Player Head").withStyle(ChatFormatting.GOLD));
-        container.setItem(15, setPlayerHead);
+        // Lore
+        CompoundTag displayTag = setDoorsItem.getOrCreateTagElement("display");
+        ListTag loreTag = new ListTag();
 
-        ItemStack toggleName = new ItemStack(Items.NAME_TAG);
-        toggleName.setHoverName(Component.literal("Toggle Name").withStyle(ChatFormatting.DARK_AQUA));
-        container.setItem(16, toggleName);
+        loreTag.add(StringTag.valueOf(
+                Component.Serializer.toJson(
+                        Component.literal("Sets all doors in the structure")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                )
+        ));
+
+        loreTag.add(StringTag.valueOf(
+                Component.Serializer.toJson(
+                        Component.literal("to match this one.")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                )
+        ));
+
+        displayTag.put("Lore", loreTag);
+        container.setItem(14, setDoorsItem);
+
+        ItemStack setPlayerHeadItem = new ItemStack(Items.PLAYER_HEAD);
+        setPlayerHeadItem.setHoverName(Component.literal("Set Player Head").withStyle(ChatFormatting.GOLD));
+        container.setItem(15, setPlayerHeadItem);
+
+        ItemStack setToggleNameItem = new ItemStack(Items.NAME_TAG);
+        setToggleNameItem.setHoverName(Component.literal("Toggle Name").withStyle(ChatFormatting.DARK_AQUA));
+        container.setItem(16, setToggleNameItem);
 
         return container;
     }

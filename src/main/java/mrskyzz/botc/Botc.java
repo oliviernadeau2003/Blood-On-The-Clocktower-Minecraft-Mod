@@ -1,14 +1,14 @@
 package mrskyzz.botc;
 
-// TODO : Remake lang accordingly ..
-// TODO : When "killing" a player, darken out his name
+// // TODO  [2026-01-30] : Remake lang accordingly ..
+// // TODO  [2026-01-30] : When "killing" a player, darken out his name
 
-//* Blood on the Clocktower (BotC) officially supports 5 to 20 players (plus one Storyteller). While the game technically functions at the minimum, it is generally considered best with 8 to 15 players, often requiring special rules (Travellers) for groups over 15.
-//* Key details:
-//* Optimal Range: 10-12 players is frequently cited as the ideal, well-balanced experience.
-//* Small Groups (5-6 players): Known as "Teensyville," these games are faster and more intense, sometimes requiring specific, smaller character scripts.
-//* Large Groups (16+): Uses "Travellers," which are characters designed for players who arrive late, leave early, or to balance very large groups.
-//* The game is designed with a Storyteller acting as the moderator, bringing the total number of participants to 6-21
+/// Blood on the Clocktower (BotC) officially supports 5 to 20 players (plus one Storyteller). While the game technically functions at the minimum, it is generally considered best with 8 to 15 players, often requiring special rules (Travellers) for groups over 15.
+/// Key details:
+/// Optimal Range: 10-12 players is frequently cited as the ideal, well-balanced experience.
+/// Small Groups (5-6 players): Known as "Teensyville," these games are faster and more intense, sometimes requiring specific, smaller character scripts.
+/// Large Groups (16+): Uses "Travellers," which are characters designed for players who arrive late, leave early, or to balance very large groups.
+/// The game is designed with a Storyteller acting as the moderator, bringing the total number of participants to 6-21
 
 import com.mojang.logging.LogUtils;
 import mrskyzz.botc.block.ModBlockEntities;
