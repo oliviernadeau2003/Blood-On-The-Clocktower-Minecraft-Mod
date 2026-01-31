@@ -11,5 +11,7 @@ public class CommandRegister {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         new SetGameStateCommand(event.getDispatcher());
+        new SetDoorNameCommand(event.getDispatcher());
+        new DeleteDoorCommand(event.getDispatcher());
     }
 }

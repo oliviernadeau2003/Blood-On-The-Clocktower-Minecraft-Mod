@@ -1,16 +1,17 @@
 package mrskyzz.botc.menu;
 
+import mrskyzz.botc.game.Door;
 import mrskyzz.botc.game.Game;
 import mrskyzz.botc.game.GameState;
 import mrskyzz.botc.utils.AbstractBotcMenu;
 import mrskyzz.botc.utils.NameToggleUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -24,8 +25,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.List;
 
 public class BotcStartupMenu extends AbstractBotcMenu {
     private final int ROWS = 3;
@@ -90,19 +89,42 @@ public class BotcStartupMenu extends AbstractBotcMenu {
         CompoundTag displayTag = setDoorsItem.getOrCreateTagElement("display");
         ListTag loreTag = new ListTag();
 
-        loreTag.add(StringTag.valueOf(
-                Component.Serializer.toJson(
-                        Component.literal("Sets all doors in the structure")
-                                .withStyle(ChatFormatting.DARK_GRAY)
-                )
-        ));
+        //! TEMP
+        //! REMOVE LATER
+        if (Game.doors.isEmpty()) {
+            Game.doors.add(new Door("01", new BlockPos(1, 1, 1), new BlockPos(3, 3, 3)));
+            Game.doors.add(new Door("Left Door Chamber", new BlockPos(1, 1, 1), new BlockPos(3, 3, 3)));
+            Game.doors.add(new Door("Right Door Chamber", new BlockPos(1, 1, 1), new BlockPos(3, 3, 3)));
+            Game.doors.add(new Door("Kitchen Door", new BlockPos(1, 1, 1), new BlockPos(3, 3, 3)));
+            Game.doors.add(new Door("Library Door", new BlockPos(1, 1, 1), new BlockPos(3, 3, 3)));
+        }
 
-        loreTag.add(StringTag.valueOf(
-                Component.Serializer.toJson(
-                        Component.literal("to match this one.")
-                                .withStyle(ChatFormatting.DARK_GRAY)
-                )
-        ));
+        // ! ---
+
+        for (Door door : Game.doors) {
+            loreTag.add(StringTag.valueOf(
+                    Component.Serializer.toJson(
+//                            Component.literal("Door " + (Game.doors.indexOf(door) + 1) + " - " + door.name())
+//                                    .withStyle(ChatFormatting.GREEN)
+                            Component.literal(door.getName())
+                                    .withStyle(ChatFormatting.GREEN)
+                    )
+            ));
+        }
+
+//        loreTag.add(StringTag.valueOf(
+//                Component.Serializer.toJson(
+//                        Component.literal("Sets all doors in the structure")
+//                                .withStyle(ChatFormatting.DARK_GRAY)
+//                )
+//        ));
+//
+//        loreTag.add(StringTag.valueOf(
+//                Component.Serializer.toJson(
+//                        Component.literal("to match this one.")
+//                                .withStyle(ChatFormatting.DARK_GRAY)
+//                )
+//        ));
 
         displayTag.put("Lore", loreTag);
         container.setItem(14, setDoorsItem);

@@ -18,16 +18,18 @@ public class ModCreativeModTabs {
 
         // ITEMS
         output.accept(ModItems.BOTC_BOOK.get());
+        output.accept(ModItems.DEATH_PLAYER_HELMET.get());
+        output.accept(ModItems.LOCATOR_STICK.get());
 
-        // BOOKS ---
-        // DEMON
+        // BOOKS ITEM ---
+        // - DEMON
         output.accept(ModItems.BOOK_ROLE_DIABLOTIN.get());
         output.accept(ModItems.BOOK_ROLE_BARON.get());
         output.accept(ModItems.BOOK_ROLE_EMPOISONNEUR.get());
         output.accept(ModItems.BOOK_ROLE_ESPION.get());
         output.accept(ModItems.BOOK_ROLE_FEMME_ECARLATE.get());
 
-        // CITADINS
+        // - CITADINS
         output.accept(ModItems.BOOK_ROLE_ARCHIVISTE.get());
         output.accept(ModItems.BOOK_ROLE_CROQUE_MORT.get());
         output.accept(ModItems.BOOK_ROLE_CUISTOT.get());
@@ -43,7 +45,7 @@ public class ModCreativeModTabs {
         output.accept(ModItems.BOOK_ROLE_VOYANTE.get());
         output.accept(ModItems.BOOK_ROLE_VIERGE.get());
 
-        // ETRANGER
+        // - ETRANGER
         //output.accept(ModItems.BOOK_ROLE_IVROGNE.get());
         output.accept(ModItems.BOOK_ROLE_RECLUS.get());
         output.accept(ModItems.BOOK_ROLE_SAINT.get());
@@ -53,9 +55,6 @@ public class ModCreativeModTabs {
         // BLOCKS
         //output.accept(ModBlocks.TEST_BLOCK.get());
         output.accept(ModBlocks.LECTERN_BLOCK.get());
-
-
-        output.accept(ModItems.DEATH_PLAYER_HELMET.get());
 
     }).build());
 

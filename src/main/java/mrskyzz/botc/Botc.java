@@ -1,7 +1,7 @@
 package mrskyzz.botc;
 
-// // TODO  [2026-01-30] : Remake lang accordingly ..
-// // TODO  [2026-01-30] : When "killing" a player, darken out his name
+// TODO  [2026-01-30] : Remake lang accordingly ..
+// TODO  [2026-01-30] : When "killing" a player, darken out his name
 
 /// Blood on the Clocktower (BotC) officially supports 5 to 20 players (plus one Storyteller). While the game technically functions at the minimum, it is generally considered best with 8 to 15 players, often requiring special rules (Travellers) for groups over 15.
 /// Key details:

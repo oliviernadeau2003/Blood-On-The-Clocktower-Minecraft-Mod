@@ -3,6 +3,7 @@ package mrskyzz.botc.item;
 import mrskyzz.botc.Botc;
 import mrskyzz.botc.item.custom.BotcBookItem;
 import mrskyzz.botc.item.custom.DeathOverlayHelmetItem;
+import mrskyzz.botc.item.custom.LocatorStick;
 import mrskyzz.botc.item.custom.RoleBookItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorMaterials;
@@ -21,6 +22,14 @@ public class ModItems {
 
     public static final RegistryObject<Item> BOTC_BOOK = ITEMS.register("botc_book",
             () -> new BotcBookItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> LOCATOR_STICK = ITEMS.register("locator_stick",
+            () -> new LocatorStick(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> DEATH_PLAYER_HELMET = ITEMS.register(
+            "death_player_helmet",
+            () -> new DeathOverlayHelmetItem(ArmorMaterials.LEATHER, new Item.Properties())
+    );
 
     // ROLES DEMONS ---
     // Register books
@@ -523,11 +532,6 @@ public class ModItems {
                                     """))
                     )
             )
-    );
-
-    public static final RegistryObject<Item> DEATH_PLAYER_HELMET = ITEMS.register(
-            "death_player_helmet",
-            () -> new DeathOverlayHelmetItem(ArmorMaterials.LEATHER, new Item.Properties())
     );
 
     // REGISTER
