@@ -43,13 +43,36 @@ public class BotcBookItem extends Item {
         }
     }
 
+//    @Override
+//    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+//        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+//            openChest(serverPlayer);
+//        }
+//        return InteractionResultHolder.success(player.getItemInHand(hand));
+//    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+
+        // ❌ Client does nothing
+        if (level.isClientSide) {
+            return InteractionResultHolder.pass(player.getItemInHand(hand));
+        }
+
+        // ❌ Only main hand should open menus
+        if (hand != InteractionHand.MAIN_HAND) {
+            return InteractionResultHolder.pass(player.getItemInHand(hand));
+        }
+
+        // ✅ Server-only menu open
+        if (player instanceof ServerPlayer serverPlayer) {
             openChest(serverPlayer);
         }
-        return InteractionResultHolder.success(player.getItemInHand(hand));
+
+        // ✅ sidedSuccess prevents double execution issues
+        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), false);
     }
+
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {

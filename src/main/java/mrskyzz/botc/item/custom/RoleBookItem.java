@@ -6,6 +6,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component.Serializer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,6 +36,12 @@ public class RoleBookItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
+        // ❌ Only main hand should open menus
+//        if (hand != InteractionHand.MAIN_HAND) {
+//            return InteractionResultHolder.pass(player.getItemInHand(hand));
+//        }
+
+        // ✅ Client-only menu open
         if (level.isClientSide) {
             ItemStack book = createBook();
             Minecraft.getInstance().setScreen(
@@ -44,7 +51,8 @@ public class RoleBookItem extends Item {
             );
         }
 
-        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+        // ✅ sidedSuccess prevents double execution issues
+        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), false);
     }
 
     // ADDED OWN LECTERN BLOCK
