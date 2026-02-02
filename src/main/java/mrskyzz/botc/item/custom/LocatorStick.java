@@ -15,6 +15,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+/// Add a second mode based on a tags for either set doors or set players head positions
+
 public class LocatorStick extends Item {
 
     private final double blockReach = 5.0;  // Default range is 5 block
@@ -42,7 +44,7 @@ public class LocatorStick extends Item {
 
         // Reset / Clear Current Selection And Pass Interaction
         if (player.isShiftKeyDown()) {
-            resetInteraction(player,true);
+            resetInteraction(player, true);
             return InteractionResultHolder.pass(player.getItemInHand(usedHand));
         }
 
@@ -54,11 +56,12 @@ public class LocatorStick extends Item {
                 case 0:
                     firstPosition = block;
                     interactionCount++;
+                    player.sendSystemMessage(Component.literal("First Block Selected"));
                     break;
                 case 1:
-                    createNewDoorAndAdd(firstPosition, block);
+                    createNewDoorAndAdd(firstPosition, block, level);
                     player.sendSystemMessage(Component.literal("New Door Created Named : " + doorName));
-                    resetInteraction(player,false);
+                    resetInteraction(player, false);
                     doorCount++;
                     break;
             }
@@ -78,9 +81,11 @@ public class LocatorStick extends Item {
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), false);
     }
 
-    private void createNewDoorAndAdd(BlockPos firstPosition, BlockPos block) {
+    private void createNewDoorAndAdd(BlockPos firstPosition, BlockPos block, Level level) {
         this.doorName = "Door " + doorCount;
-        Game.doors.add(new Door(doorName, firstPosition, block));
+        Door newDoor = new Door(doorName, firstPosition, block);
+        Game.doors.add(newDoor);
+        newDoor.save(level);
     }
 
     private BlockPos getLookingBlockPos(Player player, Level level) {

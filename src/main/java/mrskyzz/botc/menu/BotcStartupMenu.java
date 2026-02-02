@@ -82,10 +82,11 @@ public class BotcStartupMenu extends AbstractBotcMenu {
         startItem.setHoverName(Component.literal("Start Game").withStyle(ChatFormatting.GREEN));
         container.setItem(10, startItem);
 
+        // Doors Logic -
         ItemStack setDoorsItem = new ItemStack(Items.SPRUCE_DOOR);
         setDoorsItem.setHoverName(Component.literal("Set Doors").withStyle(ChatFormatting.GRAY));
 
-        // Lore
+        // - Lore
         CompoundTag displayTag = setDoorsItem.getOrCreateTagElement("display");
         ListTag loreTag = new ListTag();
 
@@ -100,6 +101,8 @@ public class BotcStartupMenu extends AbstractBotcMenu {
 
         displayTag.put("Lore", loreTag);
         container.setItem(14, setDoorsItem);
+
+        // ---
 
         ItemStack setPlayerHeadItem = new ItemStack(Items.PLAYER_HEAD);
         setPlayerHeadItem.setHoverName(Component.literal("Set Player Head").withStyle(ChatFormatting.GOLD));
@@ -116,7 +119,12 @@ public class BotcStartupMenu extends AbstractBotcMenu {
     public void handleClick(int slotId, ClickType clickType, ServerPlayer player) {
         switch (slotId) {
             case 10 -> startGame(player);
-            case 14 -> player.sendSystemMessage(Component.literal("Set Doors clicked!"));
+            case 14 -> {
+                player.sendSystemMessage(Component.literal("Set Doors clicked!"));
+
+                //! TEMP
+                Game.toggleDoors(player.level());
+            }
             case 15 -> {
                 player.sendSystemMessage(Component.literal("Set Player Head clicked!"));
 

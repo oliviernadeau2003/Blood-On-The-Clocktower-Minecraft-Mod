@@ -1,13 +1,16 @@
 package mrskyzz.botc.game;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    // Maybe change it to a Set ?
+    //? Maybe change it to a Set ?
     public static List<Door> doors = new ArrayList<>();
     private static GameState gameState = GameState.SETUP;
 
@@ -30,6 +33,12 @@ public class Game {
 //            GAME_OVER      // Broadcast that the game has ended
 //        }
         System.out.println("Game state changed to: " + newState);
+    }
+
+    public static void toggleDoors(Level level) {
+        for (Door door : doors) {
+            door.toggle(level);
+        }
     }
 
 //    Example helper
