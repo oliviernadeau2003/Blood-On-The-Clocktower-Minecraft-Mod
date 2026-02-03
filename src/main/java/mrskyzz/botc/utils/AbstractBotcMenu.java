@@ -21,7 +21,7 @@ public abstract class AbstractBotcMenu extends AbstractContainerMenu
 
     /** Called AFTER subclass construction */
     protected final void init(Inventory playerInv, int rows) {
-        this.container = createContainer();
+        this.container = createContainer(playerInv);
 
         // Menu slots
         for (int row = 0; row < rows; row++) {
@@ -89,7 +89,7 @@ public abstract class AbstractBotcMenu extends AbstractContainerMenu
         return true;
     }
 
-    public abstract SimpleContainer createContainer();
+    public abstract SimpleContainer createContainer(Inventory playerInv);
 }
 
 

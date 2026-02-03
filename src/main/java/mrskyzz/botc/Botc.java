@@ -1,7 +1,7 @@
 package mrskyzz.botc;
 
 // TODO  [2026-01-30] : Remake lang accordingly ..
-// TODO  [2026-01-30] : When "killing" a player, darken out his name
+// TODO  [2026-01-30] : When "killing" a player, darken/gray out his name
 
 /// Blood on the Clocktower (BotC) officially supports 5 to 20 players (plus one Storyteller). While the game technically functions at the minimum, it is generally considered best with 8 to 15 players, often requiring special rules (Travellers) for groups over 15.
 /// Key details:
@@ -10,11 +10,19 @@ package mrskyzz.botc;
 /// Large Groups (16+): Uses "Travellers," which are characters designed for players who arrive late, leave early, or to balance very large groups.
 /// The game is designed with a Storyteller acting as the moderator, bringing the total number of participants to 6-21
 
+
+// TODO  [2026-02-03] : Change the setdoorname and deletedoor command to use the DoorSavedData
+// TODO  [2026-02-03] : Make that the full door is saved in file not only blockpos and name ?
+
+
 import com.mojang.logging.LogUtils;
 import mrskyzz.botc.block.ModBlockEntities;
 import mrskyzz.botc.block.ModBlocks;
+import mrskyzz.botc.game.Door;
 import mrskyzz.botc.item.ModCreativeModTabs;
 import mrskyzz.botc.item.ModItems;
+import mrskyzz.botc.utils.DoorSavedData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -53,5 +61,20 @@ public class Botc {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
+        loadSavedDoor(event);
+    }
+
+    private void loadSavedDoor(ServerStartingEvent event) {
+        ServerLevel level = event.getServer().overworld();
+        DoorSavedData data = DoorSavedData.get(level);
+
+        for (Door door : data.getDoors()) {
+            door.capture(level);
+
+            // Restore correct state
+            if (door.isOpen()) {
+                door.toggle(level); // re-open if needed
+            }
+        }
     }
 }

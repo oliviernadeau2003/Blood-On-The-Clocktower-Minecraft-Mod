@@ -24,7 +24,7 @@ public class BotcPlayersMenu extends AbstractBotcMenu {
     }
 
     @Override
-    public SimpleContainer createContainer() {
+    public SimpleContainer createContainer(Inventory playerInv) {
         SimpleContainer container = new SimpleContainer(INVENTORY_SIZE);
 
         ItemStack filler = new ItemStack(Items.GRAY_STAINED_GLASS_PANE);

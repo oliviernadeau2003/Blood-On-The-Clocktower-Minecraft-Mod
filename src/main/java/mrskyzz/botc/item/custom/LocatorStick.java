@@ -1,9 +1,11 @@
 package mrskyzz.botc.item.custom;
 
 import mrskyzz.botc.game.Door;
-import mrskyzz.botc.game.Game;
+import mrskyzz.botc.utils.DoorSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -29,64 +31,117 @@ public class LocatorStick extends Item {
         super(pProperties);
     }
 
+//    @Override
+//    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+//
+//        // ✅ Client-only
+//        if (level.isClientSide) {
+//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+//        }
+//
+//        // ❌ Only main hand should open menus
+//        if (usedHand != InteractionHand.MAIN_HAND) {
+//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+//        }
+//
+//        // Reset / Clear Current Selection And Pass Interaction
+//        if (player.isShiftKeyDown()) {
+//            resetInteraction(player, true);
+//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+//        }
+//
+//        // Get block selected block
+//        BlockPos block = getLookingBlockPos(player, level);
+//
+//        if (block != null) {
+//            switch (interactionCount) {
+//                case 0:
+//                    firstPosition = block;
+//                    interactionCount++;
+//                    player.sendSystemMessage(Component.literal("First Block Selected"));
+//                    break;
+//                case 1:
+//                    createNewDoorAndSave(firstPosition, block, level, serverLevel);
+//                    player.sendSystemMessage(Component.literal("New Door Created Named : " + doorName));
+//                    resetInteraction(player, false);
+//                    doorCount++;
+//                    break;
+//            }
+//        } else {
+//            player.sendSystemMessage(Component.literal("No Block Selected"));
+//        }
+//
+//        return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), false);
+//    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
 
-        // ✅ Client-only
+        // Client-only: do nothing
         if (level.isClientSide) {
             return InteractionResultHolder.pass(player.getItemInHand(usedHand));
         }
 
-        // ❌ Only main hand should open menus
+        // Only main hand
         if (usedHand != InteractionHand.MAIN_HAND) {
             return InteractionResultHolder.pass(player.getItemInHand(usedHand));
         }
 
-        // Reset / Clear Current Selection And Pass Interaction
+        // ServerLevel is required from here on
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+        }
+
+        // Reset selection
         if (player.isShiftKeyDown()) {
             resetInteraction(player, true);
             return InteractionResultHolder.pass(player.getItemInHand(usedHand));
         }
 
-        // Get block selected block
+        // Get selected block
         BlockPos block = getLookingBlockPos(player, level);
 
         if (block != null) {
             switch (interactionCount) {
-                case 0:
+                case 0 -> {
                     firstPosition = block;
                     interactionCount++;
                     player.sendSystemMessage(Component.literal("First Block Selected"));
-                    break;
-                case 1:
-                    createNewDoorAndAdd(firstPosition, block, level);
+                }
+                case 1 -> {
+                    createNewDoorAndSave(firstPosition, block, serverLevel);
                     player.sendSystemMessage(Component.literal("New Door Created Named : " + doorName));
                     resetInteraction(player, false);
                     doorCount++;
-                    break;
+                }
             }
         } else {
             player.sendSystemMessage(Component.literal("No Block Selected"));
         }
 
-//        if (block != null) {
-//            player.sendSystemMessage(Component.literal(
-//                    "Player looking at block (" +
-//                            block.getX() + ", " +
-//                            block.getY() + ", " +
-//                            block.getZ() + ")"
-//            ));
-//        }
-
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), false);
     }
 
-    private void createNewDoorAndAdd(BlockPos firstPosition, BlockPos block, Level level) {
+
+//    private void createNewDoorAndSave(BlockPos firstPosition, BlockPos block, Level level, ServerLevel serverLevel) {
+//        DoorSavedData data = DoorSavedData.get(serverLevel);
+//
+//        this.doorName = "Door " + doorCount;
+//        Door newDoor = new Door(doorName, firstPosition, block);
+//        newDoor.capture(level);
+//        data.addDoor(newDoor);
+//    }
+
+    private void createNewDoorAndSave(BlockPos firstPosition, BlockPos block, ServerLevel level) {
+        DoorSavedData data = DoorSavedData.get(level);
+
         this.doorName = "Door " + doorCount;
         Door newDoor = new Door(doorName, firstPosition, block);
-        Game.doors.add(newDoor);
-        newDoor.save(level);
+
+        newDoor.capture(level);
+        data.addDoor(newDoor);
     }
+
 
     private BlockPos getLookingBlockPos(Player player, Level level) {
         Vec3 start = player.getEyePosition(1.0F);

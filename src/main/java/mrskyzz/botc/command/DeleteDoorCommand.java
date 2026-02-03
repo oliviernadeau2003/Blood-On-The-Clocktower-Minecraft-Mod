@@ -5,9 +5,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mrskyzz.botc.game.Door;
 import mrskyzz.botc.game.Game;
+import mrskyzz.botc.utils.DoorSavedData;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 
 public class DeleteDoorCommand {
 
@@ -17,9 +19,10 @@ public class DeleteDoorCommand {
                         .requires(source -> source.hasPermission(4)) // OP only
                         .then(Commands.argument("door", StringArgumentType.greedyString())
                                 .suggests((context, builder) -> {
+                                    ServerLevel level = context.getSource().getLevel();
                                     String remaining = builder.getRemaining().toLowerCase();
 
-                                    Game.doors.stream()
+                                    Game.getDoors(level).stream()
                                             .map(Door::getName)
                                             .map(String::toLowerCase)
                                             .sorted()
@@ -44,7 +47,7 @@ public class DeleteDoorCommand {
         doorName = doorName.trim();
 
         String finalDoorName = doorName;
-        boolean removed = Game.doors.removeIf(
+        boolean removed = Game.getDoors(source.getLevel()).removeIf(
                 door -> door.getName().equalsIgnoreCase(finalDoorName)
         );
 

@@ -8,6 +8,9 @@ import mrskyzz.botc.game.Game;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+
+import java.util.List;
 
 public class SetDoorNameCommand {
 
@@ -18,7 +21,8 @@ public class SetDoorNameCommand {
                         .then(
                                 Commands.argument("door", StringArgumentType.string())
                                         .suggests((context, builder) -> {
-                                            Game.doors.stream()
+                                            ServerLevel level = context.getSource().getLevel();
+                                            Game.getDoors(level).stream()
                                                     .map(Door::getName)
                                                     .sorted(String.CASE_INSENSITIVE_ORDER)
                                                     .forEach(builder::suggest);
@@ -40,11 +44,11 @@ public class SetDoorNameCommand {
     }
 
     private int setDoorName(CommandSourceStack source, String oldName, String newName) throws CommandSyntaxException {
-
-        for (Door door : Game.doors) {
+        List<Door> doors = Game.getDoors(source.getLevel());
+        for (Door door : doors) {
             if (door.getName().equalsIgnoreCase(oldName)) {
 
-                for (Door d : Game.doors) {
+                for (Door d : doors) {
                     if (d.getName().equalsIgnoreCase(newName)) {
                         source.sendFailure(
                                 Component.literal("A door named \"" + newName + "\" already exists.")

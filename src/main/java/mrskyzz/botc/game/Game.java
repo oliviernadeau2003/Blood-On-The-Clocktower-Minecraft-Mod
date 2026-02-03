@@ -1,18 +1,16 @@
 package mrskyzz.botc.game;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import mrskyzz.botc.utils.DoorSavedData;
+import net.minecraft.server.level.ServerLevel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    //? Maybe change it to a Set ?
-    public static List<Door> doors = new ArrayList<>();
+    //    public static List<Door> doors = new ArrayList<>();
     private static GameState gameState = GameState.SETUP;
+//    static DoorSavedData data = DoorSavedData.get(level);
+//    public static List<Door> doors = data.getDoors();
 
     public static GameState getGameState() {
         return gameState;
@@ -35,9 +33,22 @@ public class Game {
         System.out.println("Game state changed to: " + newState);
     }
 
-    public static void toggleDoors(Level level) {
-        for (Door door : doors) {
+//    public static void toggleDoors(Level level) {
+//        for (Door door : doors) {
+//            door.toggle(level);
+//        }
+//    }
+
+    public static List<Door> getDoors(ServerLevel level) {
+        return DoorSavedData.get(level).getDoors();
+    }
+
+    public static void toggleDoors(ServerLevel level) {
+        DoorSavedData data = DoorSavedData.get(level);
+
+        for (Door door : data.getDoors()) {
             door.toggle(level);
+            data.setDirty(); // SAVE change
         }
     }
 

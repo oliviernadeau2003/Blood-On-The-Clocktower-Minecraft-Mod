@@ -1,14 +1,13 @@
 package mrskyzz.botc.game;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/// Save Doors Based On Level
 
 public class Door {
 
@@ -30,11 +29,22 @@ public class Door {
        Initialization
        ------------------------- */
 
+    public static Door loadFromNBT(CompoundTag tag) {
+        Door door = new Door(
+                tag.getString("Name"),
+                BlockPos.of(tag.getLong("Pos1")),
+                BlockPos.of(tag.getLong("Pos2"))
+        );
+
+        door.open = tag.getBoolean("Open");
+        return door;
+    }
+
     /**
      * Captures the blocks in the door area.
      * Call this ONCE after creating the door.
      */
-    public void save(Level level) {
+    public void capture(Level level) {
         storedBlocks.clear();
 
         for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
@@ -45,6 +55,18 @@ public class Door {
             }
         }
     }
+
+    public CompoundTag saveToNBT() {
+        CompoundTag tag = new CompoundTag();
+
+        tag.putString("Name", name);
+        tag.putLong("Pos1", pos1.asLong());
+        tag.putLong("Pos2", pos2.asLong());
+        tag.putBoolean("Open", open);
+
+        return tag;
+    }
+
 
     /* -------------------------
        Toggle logic
