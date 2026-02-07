@@ -10,11 +10,6 @@ package mrskyzz.botc;
 /// Large Groups (16+): Uses "Travellers," which are characters designed for players who arrive late, leave early, or to balance very large groups.
 /// The game is designed with a Storyteller acting as the moderator, bringing the total number of participants to 6-21
 
-
-// TODO  [2026-02-03] : Change the setdoorname and deletedoor command to use the DoorSavedData
-// TODO  [2026-02-03] : Make that the full door is saved in file not only blockpos and name ?
-
-
 import com.mojang.logging.LogUtils;
 import mrskyzz.botc.block.ModBlockEntities;
 import mrskyzz.botc.block.ModBlocks;
@@ -63,20 +58,6 @@ public class Botc {
     public void onServerStarting(ServerStartingEvent event) {
         loadSavedDoor(event);
     }
-
-//    private void loadSavedDoor(ServerStartingEvent event) {
-//        ServerLevel level = event.getServer().overworld();
-//        DoorSavedData data = DoorSavedData.get(level);
-//
-//        for (Door door : data.getDoors()) {
-//            door.capture(level);
-//
-//            // Restore correct state
-//            if (door.isOpen()) {
-//                door.toggle(level); // re-open if needed
-//            }
-//        }
-//    }
 
     private void loadSavedDoor(ServerStartingEvent event) {
         ServerLevel level = event.getServer().overworld();

@@ -37,17 +37,6 @@ public class Door {
        Initialization
        ------------------------- */
 
-//    public static Door loadFromNBT(CompoundTag tag) {
-//        Door door = new Door(
-//                tag.getString("Name"),
-//                BlockPos.of(tag.getLong("Pos1")),
-//                BlockPos.of(tag.getLong("Pos2"))
-//        );
-//
-//        door.open = tag.getBoolean("Open");
-//        return door;
-//    }
-
     public static Door loadFromNBT(CompoundTag tag) {
         Door door = new Door(
                 tag.getString("Name"),
@@ -68,17 +57,6 @@ public class Door {
 
         return door;
     }
-
-//    public CompoundTag saveToNBT() {
-//        CompoundTag tag = new CompoundTag();
-//
-//        tag.putString("Name", name);
-//        tag.putLong("Pos1", pos1.asLong());
-//        tag.putLong("Pos2", pos2.asLong());
-//        tag.putBoolean("Open", open);
-//
-//        return tag;
-//    }
 
     public CompoundTag saveToNBT() {
         CompoundTag tag = new CompoundTag();
@@ -134,16 +112,6 @@ public class Door {
     /* -------------------------
        Toggle logic
        ------------------------- */
-
-//    public void toggle(Level level) {
-//        if (open) {
-//            close(level);
-//        } else {
-//            open(level);
-//        }
-//
-//        open = !open;
-//    }
 
     public void toggle(Level level) {
         if (open) {
