@@ -45,7 +45,6 @@ public class Game {
 
     public static void toggleDoors(ServerLevel level) {
         DoorSavedData data = DoorSavedData.get(level);
-
         for (Door door : data.getDoors()) {
             door.toggle(level);
             data.setDirty(); // SAVE change

@@ -5,7 +5,6 @@ import mrskyzz.botc.utils.DoorSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -30,49 +29,6 @@ public class LocatorStick extends Item {
     public LocatorStick(Properties pProperties) {
         super(pProperties);
     }
-
-//    @Override
-//    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-//
-//        // ✅ Client-only
-//        if (level.isClientSide) {
-//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
-//        }
-//
-//        // ❌ Only main hand should open menus
-//        if (usedHand != InteractionHand.MAIN_HAND) {
-//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
-//        }
-//
-//        // Reset / Clear Current Selection And Pass Interaction
-//        if (player.isShiftKeyDown()) {
-//            resetInteraction(player, true);
-//            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
-//        }
-//
-//        // Get block selected block
-//        BlockPos block = getLookingBlockPos(player, level);
-//
-//        if (block != null) {
-//            switch (interactionCount) {
-//                case 0:
-//                    firstPosition = block;
-//                    interactionCount++;
-//                    player.sendSystemMessage(Component.literal("First Block Selected"));
-//                    break;
-//                case 1:
-//                    createNewDoorAndSave(firstPosition, block, level, serverLevel);
-//                    player.sendSystemMessage(Component.literal("New Door Created Named : " + doorName));
-//                    resetInteraction(player, false);
-//                    doorCount++;
-//                    break;
-//            }
-//        } else {
-//            player.sendSystemMessage(Component.literal("No Block Selected"));
-//        }
-//
-//        return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), false);
-//    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
@@ -122,24 +78,12 @@ public class LocatorStick extends Item {
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), false);
     }
 
-
-//    private void createNewDoorAndSave(BlockPos firstPosition, BlockPos block, Level level, ServerLevel serverLevel) {
-//        DoorSavedData data = DoorSavedData.get(serverLevel);
-//
-//        this.doorName = "Door " + doorCount;
-//        Door newDoor = new Door(doorName, firstPosition, block);
-//        newDoor.capture(level);
-//        data.addDoor(newDoor);
-//    }
-
     private void createNewDoorAndSave(BlockPos firstPosition, BlockPos block, ServerLevel level) {
-        DoorSavedData data = DoorSavedData.get(level);
-
-        this.doorName = "Door " + doorCount;
+                this.doorName = "Door " + doorCount;
         Door newDoor = new Door(doorName, firstPosition, block);
 
         newDoor.capture(level);
-        data.addDoor(newDoor);
+        DoorSavedData.get(level).addDoor(newDoor);
     }
 
 

@@ -20,7 +20,8 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class RoleBookItem extends Item {
+//? Should I Set It as a WrittenBookItem Or Item
+public class RoleBookItem extends WrittenBookItem {
 
     private final String title;
     private final String author;
@@ -34,12 +35,12 @@ public class RoleBookItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public boolean isFoil(ItemStack pStack) {
+        return false;
+    }
 
-        // ❌ Only main hand should open menus
-//        if (hand != InteractionHand.MAIN_HAND) {
-//            return InteractionResultHolder.pass(player.getItemInHand(hand));
-//        }
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 
         // ✅ Client-only menu open
         if (level.isClientSide) {

@@ -1,7 +1,13 @@
 package mrskyzz.botc.game;
 
+import mrskyzz.botc.utils.DoorSavedData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +21,7 @@ public class Door {
     private final BlockPos pos2;
     // Stores the original blocks of the door
     private final Map<BlockPos, BlockState> storedBlocks = new HashMap<>();
+    private final Map<BlockPos, CompoundTag> storedBlockNBT = new HashMap<>();
     private String name;
     // false = closed (blocks placed), true = open (air)
     private boolean open = false;
@@ -29,6 +36,17 @@ public class Door {
        Initialization
        ------------------------- */
 
+//    public static Door loadFromNBT(CompoundTag tag) {
+//        Door door = new Door(
+//                tag.getString("Name"),
+//                BlockPos.of(tag.getLong("Pos1")),
+//                BlockPos.of(tag.getLong("Pos2"))
+//        );
+//
+//        door.open = tag.getBoolean("Open");
+//        return door;
+//    }
+
     public static Door loadFromNBT(CompoundTag tag) {
         Door door = new Door(
                 tag.getString("Name"),
@@ -37,8 +55,50 @@ public class Door {
         );
 
         door.open = tag.getBoolean("Open");
+
+        if (tag.contains("Blocks")) {
+            ListTag blocksList = tag.getList("Blocks", Tag.TAG_COMPOUND);
+            for (int i = 0; i < blocksList.size(); i++) {
+                CompoundTag blockTag = blocksList.getCompound(i);
+                BlockPos pos = BlockPos.of(blockTag.getLong("Pos"));
+                door.storedBlockNBT.put(pos, blockTag.getCompound("State"));
+            }
+        }
+
         return door;
     }
+
+//    public CompoundTag saveToNBT() {
+//        CompoundTag tag = new CompoundTag();
+//
+//        tag.putString("Name", name);
+//        tag.putLong("Pos1", pos1.asLong());
+//        tag.putLong("Pos2", pos2.asLong());
+//        tag.putBoolean("Open", open);
+//
+//        return tag;
+//    }
+
+    public CompoundTag saveToNBT() {
+        CompoundTag tag = new CompoundTag();
+
+        tag.putString("Name", name);
+        tag.putLong("Pos1", pos1.asLong());
+        tag.putLong("Pos2", pos2.asLong());
+        tag.putBoolean("Open", open);
+
+        ListTag blocksList = new ListTag();
+        for (Map.Entry<BlockPos, BlockState> entry : storedBlocks.entrySet()) {
+            CompoundTag blockTag = new CompoundTag();
+            blockTag.putLong("Pos", entry.getKey().asLong());
+            blockTag.put("State", NbtUtils.writeBlockState(entry.getValue()));
+            blocksList.add(blockTag);
+        }
+
+        tag.put("Blocks", blocksList);
+        return tag;
+    }
+
 
     /**
      * Captures the blocks in the door area.
@@ -56,21 +116,33 @@ public class Door {
         }
     }
 
-    public CompoundTag saveToNBT() {
-        CompoundTag tag = new CompoundTag();
+    public void resolveStoredBlocks(Level level) {
+        storedBlocks.clear();
 
-        tag.putString("Name", name);
-        tag.putLong("Pos1", pos1.asLong());
-        tag.putLong("Pos2", pos2.asLong());
-        tag.putBoolean("Open", open);
+        var lookup = level.registryAccess().lookupOrThrow(Registries.BLOCK);
 
-        return tag;
+        for (Map.Entry<BlockPos, CompoundTag> entry : storedBlockNBT.entrySet()) {
+            BlockState state = NbtUtils.readBlockState(lookup, entry.getValue());
+            storedBlocks.put(entry.getKey(), state);
+        }
+
+        storedBlockNBT.clear(); // free memory
     }
 
 
     /* -------------------------
        Toggle logic
        ------------------------- */
+
+//    public void toggle(Level level) {
+//        if (open) {
+//            close(level);
+//        } else {
+//            open(level);
+//        }
+//
+//        open = !open;
+//    }
 
     public void toggle(Level level) {
         if (open) {
@@ -80,15 +152,20 @@ public class Door {
         }
 
         open = !open;
+
+        if (!level.isClientSide()) {
+            DoorSavedData.get((ServerLevel) level).setDirty();
+        }
     }
 
-    private void open(Level level) {
+
+    public void open(Level level) {
         for (BlockPos pos : storedBlocks.keySet()) {
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
         }
     }
 
-    private void close(Level level) {
+    public void close(Level level) {
         for (Map.Entry<BlockPos, BlockState> entry : storedBlocks.entrySet()) {
             level.setBlock(entry.getKey(), entry.getValue(), 3);
         }

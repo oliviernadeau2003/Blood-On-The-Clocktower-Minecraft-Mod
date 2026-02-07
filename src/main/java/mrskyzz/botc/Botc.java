@@ -64,17 +64,35 @@ public class Botc {
         loadSavedDoor(event);
     }
 
+//    private void loadSavedDoor(ServerStartingEvent event) {
+//        ServerLevel level = event.getServer().overworld();
+//        DoorSavedData data = DoorSavedData.get(level);
+//
+//        for (Door door : data.getDoors()) {
+//            door.capture(level);
+//
+//            // Restore correct state
+//            if (door.isOpen()) {
+//                door.toggle(level); // re-open if needed
+//            }
+//        }
+//    }
+
     private void loadSavedDoor(ServerStartingEvent event) {
         ServerLevel level = event.getServer().overworld();
         DoorSavedData data = DoorSavedData.get(level);
 
         for (Door door : data.getDoors()) {
-            door.capture(level);
+            // 1️⃣ Resolve block states from NBT
+            door.resolveStoredBlocks(level);
 
-            // Restore correct state
+            // 2️⃣ Apply visual state
             if (door.isOpen()) {
-                door.toggle(level); // re-open if needed
+                door.open(level);
+            } else {
+                door.close(level);
             }
         }
     }
+
 }

@@ -17,11 +17,10 @@ public class ModCreativeModTabs {
     public static final RegistryObject<CreativeModeTab> BOTC_TAB = CREATIVE_MODE_TABS.register("botc_tab", () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.BOTC_BOOK.get())).title(Component.translatable("creativetab.botc_tab")).displayItems((itemDisplayParameters, output) -> {
 
         // ITEMS
-        output.accept(ModItems.BOTC_BOOK.get());
-        output.accept(ModItems.DEATH_PLAYER_HELMET.get());
-        output.accept(ModItems.LOCATOR_STICK.get());
 
         // BOOKS ITEM ---
+        output.accept(ModItems.BOTC_BOOK.get());
+
         // - DEMON
         output.accept(ModItems.BOOK_ROLE_DIABLOTIN.get());
         output.accept(ModItems.BOOK_ROLE_BARON.get());
@@ -51,10 +50,12 @@ public class ModCreativeModTabs {
         output.accept(ModItems.BOOK_ROLE_SAINT.get());
         output.accept(ModItems.BOOK_ROLE_VIERGE.get());
 
-
         // BLOCKS
         //output.accept(ModBlocks.TEST_BLOCK.get());
         output.accept(ModBlocks.LECTERN_BLOCK.get());
+
+        output.accept(ModItems.DEATH_PLAYER_HELMET.get());
+        output.accept(ModItems.LOCATOR_STICK.get());
 
     }).build());
 
