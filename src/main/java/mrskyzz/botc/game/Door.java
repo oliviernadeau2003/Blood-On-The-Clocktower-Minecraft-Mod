@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -161,13 +162,13 @@ public class Door {
 
     public void open(Level level) {
         for (BlockPos pos : storedBlocks.keySet()) {
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_SUPPRESS_DROPS);
         }
     }
 
     public void close(Level level) {
         for (Map.Entry<BlockPos, BlockState> entry : storedBlocks.entrySet()) {
-            level.setBlock(entry.getKey(), entry.getValue(), 3);
+            level.setBlock(entry.getKey(), entry.getValue(), Block.UPDATE_CLIENTS | Block.UPDATE_SUPPRESS_DROPS);
         }
     }
 
